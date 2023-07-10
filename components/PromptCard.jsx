@@ -14,6 +14,14 @@ handleEdit, handleDelete }) => {
 
   const [copied, setCopied] = useState("");
 
+  const handleProfileClick = () => {
+    console.log(post);
+
+    if (post.creator._id === session?.user.id) return router.push("/profile");
+
+    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
+  };
+
   const handleCopy = () => {
     setCopied(post.prompt);
     navigator.clipboard.writeText(post.prompt);
@@ -25,7 +33,9 @@ handleEdit, handleDelete }) => {
       <div className='flex justify-between
       items-start gap-5'>
         <div className='flex-1 flex justify-start
-        items-center gap-3 cursor-pointer'>
+        items-center gap-3 cursor-pointer'
+        onClick={handleProfileClick}
+        >
             <Image
               src={post.creator.image}
               alt='user image'
@@ -63,7 +73,7 @@ handleEdit, handleDelete }) => {
       <p className='font-inter 
       text-sm blue_gradient 
       cursor-pointer'
-      onClick={() => handleTagClick && handleTagClick}
+      onClick={() => handleTagClick && handleTagClick(post.tag)}
       >{post.tag}</p>
 
       {session?.user.id === post.creator._id &&
